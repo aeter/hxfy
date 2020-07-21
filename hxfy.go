@@ -27,12 +27,12 @@ Light Gray   0;37     White         1;37
 */
 
 const (
-	Reset    = "\033[0m"
-	Black    = "\033[0;31m%s" + Reset
-	DarkGray = "\033[1;30m%s" + Reset
-	Green    = "\033[1;32m%s" + Reset
-	Yellow   = "\033[0;33m%s" + Reset
-	Cyan     = "\033[1;36m%s" + Reset
+	reset    = "\033[0m"
+	black    = "\033[0;31m%s" + reset
+	darkGray = "\033[1;30m%s" + reset
+	green    = "\033[1;32m%s" + reset
+	yellow   = "\033[0;33m%s" + reset
+	cyan     = "\033[1;36m%s" + reset
 )
 
 func usage() {
@@ -55,16 +55,16 @@ func byteScanner() *bufio.Scanner {
 
 func identify(b []byte) (color, letter string) {
 	if b[0] == 0 { // NULL byte
-		color = DarkGray
+		color = darkGray
 		letter = fmt.Sprintf(color, "0")
 	} else if b[0] > 126 { // nonascii
-		color = Yellow
+		color = yellow
 		letter = fmt.Sprintf(color, ".")
 	} else if b[0] < 33 { // ascii non-printable
-		color = Green
+		color = green
 		letter = fmt.Sprintf(color, "_")
 	} else { // ascii printable
-		color = Cyan
+		color = cyan
 		letter = fmt.Sprintf(color, b)
 	}
 	return
@@ -98,11 +98,11 @@ func main() {
 
 	// equalizing columns at the last line
 	for ; i%16 != 0; i++ {
-		hexStr.WriteString(fmt.Sprintf(Black, "  "))
+		hexStr.WriteString(fmt.Sprintf(black, "  "))
 		hexStr.WriteString(" ")
 	}
 
 	fmt.Printf("%s ", hexStr.String())
 	fmt.Printf("%s\n", str.String())
-	fmt.Println(Reset)
+	fmt.Println(reset)
 }
