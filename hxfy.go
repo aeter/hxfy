@@ -20,12 +20,12 @@ Light Gray   0;37     White         1;37
 */
 
 const (
-	reset    = "\033[0m"
-	black    = "\033[0;31m%s" + reset
-	darkGray = "\033[1;30m%s" + reset
-	green    = "\033[1;32m%s" + reset
-	yellow   = "\033[0;33m%s" + reset
-	cyan     = "\033[1;36m%s" + reset
+	reset      = "\033[0m"
+	black      = "\033[0;30m%s" + reset
+	darkGray   = "\033[1;30m%s" + reset
+	lightGreen = "\033[1;32m%s" + reset
+	orange     = "\033[0;33m%s" + reset
+	lightCyan  = "\033[1;36m%s" + reset
 )
 
 func usage() {
@@ -51,13 +51,13 @@ func identify(b []byte) (color, letter string) {
 		color = darkGray
 		letter = fmt.Sprintf(color, "0")
 	} else if b[0] > 126 { // nonascii
-		color = yellow
+		color = orange
 		letter = fmt.Sprintf(color, ".")
 	} else if b[0] < 33 { // ascii non-printable
-		color = green
+		color = lightGreen
 		letter = fmt.Sprintf(color, "_")
 	} else { // ascii printable
-		color = cyan
+		color = lightCyan
 		letter = fmt.Sprintf(color, b)
 	}
 	return
