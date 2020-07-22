@@ -28,18 +28,32 @@ const (
 	lightCyan  = "\033[1;36m%s" + reset
 )
 
+func stdinPiped() bool {
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		fmt.Println(err)
+	}
+	return (stat.Mode() & os.ModeCharDevice) == 0
+}
+
 func usage() {
-	if len(os.Args) < 2 {
+	if !stdinPiped() && len(os.Args) < 2 {
 		fmt.Printf("Usage: %s <filename>\n", os.Args[0])
 		os.Exit(1)
 	}
 }
 
 func byteScanner() *bufio.Scanner {
-	filename, err := os.Open(os.Args[1])
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	var filename *os.File
+	var err error
+	if stdinPiped() {
+		filename = os.Stdin
+	} else {
+		filename, err = os.Open(os.Args[1])
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 	}
 	sc := bufio.NewScanner(filename)
 	sc.Split(bufio.ScanBytes)
