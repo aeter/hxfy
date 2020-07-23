@@ -111,5 +111,5 @@ func main() {
 
 	fmt.Printf("%s ", hexStr.String())
 	fmt.Printf("%s\n", str.String())
-	fmt.Printf(reset)
+	fmt.Print(reset)
 }
